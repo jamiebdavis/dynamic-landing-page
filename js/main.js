@@ -4,6 +4,10 @@ const time = document.getElementById("time"),
   name = document.getElementById("name"),
   focus = document.getElementById("focus");
 
+//Options
+
+const showAmPm = true;
+
 // Show Time
 
 function showTime() {
@@ -21,7 +25,7 @@ function showTime() {
   //Output Time
   time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(
     sec
-  )}`;
+  )} ${showAmPm ? amPM : ""}`;
 
   setTimeout(showTime, 1000);
 }
@@ -62,16 +66,44 @@ function getName() {
   }
 }
 
+// Set Name
+function setName(e) {
+  if (e.type === "keypress") {
+    if (e.which == 13 || e.keyCode == 13) {
+      localStorage.setItem("name", e.target.innerText);
+      name.blur();
+    }
+  } else {
+    localStorage.setItem("name", e.target.innerText);
+  }
+}
+
 // Get focus
 function getFocus() {
   if (localStorage.getItem("focus") === null) {
     focus.textContent = "[Enter Focus]";
   } else {
-    focus.textContent = localStorage.getItem("name");
+    focus.textContent = localStorage.getItem("focus");
   }
 }
 
-name.addEventListener();
+// Set Name
+function setFocus(e) {
+  if (e.type === "keypress") {
+    if (e.which == 13 || e.keyCode == 13) {
+      localStorage.setItem("focus", e.target.innerText);
+      focus.blur();
+    }
+  } else {
+    localStorage.setItem("focus", e.target.innerText);
+  }
+}
+
+name.addEventListener("keypress", setName);
+name.addEventListener("blur", setName);
+
+focus.addEventListener("keypress", setFocus);
+focus.addEventListener("blur", setFocus);
 
 //RUN
 showTime();
